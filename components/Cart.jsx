@@ -12,6 +12,12 @@ const Cart = () => {
   const cartRef = useRef();
   const { totalPrice, totalQuantities, cartItems, setShowCart, incQty, decQty, qty, toggleCartItemQuantity, onRemove } = useStateContext();
 
+  const handleCheckout = () => {
+    if(cartItems.length > 1) {
+      toast.error('You can only checkout one product at a time. Please remove other items and try again.');
+    }
+  }
+
   return (
     <div className='cart-wrapper' ref={cartRef}>
       <div className='cart-container'>
@@ -77,7 +83,7 @@ const Cart = () => {
               <button
                 type='button'
                 className='btn'
-                onClick=''>
+                onClick={() => handleCheckout(cartItems)}>
                   Pay with MetaMask
               </button>
 

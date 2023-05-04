@@ -5,16 +5,16 @@ import { Product } from '../../components';
 import { useStateContext } from '../../context/StateContext';
 
 const ProductDetails = ({ product, products }) => {
-    const { image, name, details, price } = product;
+    const { image, name, details, price, seller } = product;
 
     const [index, setIndex] = useState(0);
     const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
 
-const handleBuyNow = () => {
-        onAdd(product, qty);
-    
-        setShowCart(true);
-      }
+    const handleBuyNow = () => {
+            onAdd(product, qty);
+        
+            setShowCart(true);
+        }
 
     return (
     <div>
@@ -31,6 +31,7 @@ const handleBuyNow = () => {
             </div>
 
             <div className='product-detail-desc'>
+                <h5>{seller}</h5>
                 <h1>{name}</h1>
                 <div className='reviews'>
                     <div>
@@ -56,8 +57,22 @@ const handleBuyNow = () => {
                     </p>
                 </div> */}
                 <div className='buttons'>
-                    <button type='button' className='add-to-cart' onClick={() => onAdd(product, qty)}>Add to Cart</button>
+                    {/* <button type='button' className='add-to-cart' onClick={() => onAdd(product)}>Add to Cart</button> */}
                     <button type='button' className='buy-now' onClick={handleBuyNow}>Buy Now</button>
+                </div>
+                <div className="sale-info">
+                    <div>
+                        <h3>Digital product</h3>
+                        <p>You are purchasing a digital version of this game. Activate it using a product key.</p>
+                    </div>
+                    <div>
+                        <h3>Real-time delivery</h3>
+                        <p>Product activation code will be digitally delivered by the seller, to guarantee authenticity.</p>
+                    </div>
+                    <div>
+                        <h3>Dispute Policy</h3>
+                        <p>You can dispute after purchase in case of defective key or non-delivery.</p>
+                    </div>
                 </div>
             </div>
         </div>

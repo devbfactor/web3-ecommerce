@@ -9,7 +9,7 @@ const HeroBanner = ({ heroBanner }) => {
       <div>
         <p className='small-text'>{heroBanner.smallText}</p>
         <h3>{heroBanner.midText}</h3>
-        <h1>{heroBanner.largeText1}</h1>
+        <h4>{heroBanner.desc}</h4>
         <img src={urlFor(heroBanner.image)} alt='Featured Video Game' className='hero-banner-image' />
 
         <div>
@@ -18,7 +18,7 @@ const HeroBanner = ({ heroBanner }) => {
           </Link>
           <div className='desc'>
             {/* <h5>Description</h5> */}
-            <p>{heroBanner.desc}</p>
+            {/* <p>{heroBanner.desc}</p> */}
           </div>
         </div>
       </div>

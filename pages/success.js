@@ -5,7 +5,7 @@ import { BsBagCheckFill } from 'react-icons/bs';
 import { useStateContext } from '../context/StateContext';
 
 const Success = () => {
-  const { setCartItems, setTotalPrice, setTotalQuantities } = useStateContext();
+  const { setCartItems, setTotalPrice, setTotalQuantities, connectedAddress } = useStateContext();
   
   return (
     <div className="success-wrapper">
@@ -13,19 +13,19 @@ const Success = () => {
         <p className="icon">
           <BsBagCheckFill />
         </p>
-        <h2>Thank you for your order!</h2>
-        <p className="email-msg">Check your email inbox for the product code.</p>
+        <h2>Thank you for supporting indie creators!</h2>
+        <p className="email-msg">The product code will be delivered to you shortly.</p>
         <p className="description">
-          If you have any questions, please email
-          <a className="email" href="mailto:order@example.com">
-            order@example.com
-          </a>
+          You will be given time to confirm delivery or dispute in case of a faulty key. After this time has lapsed, the transaction will be automatically confirmed.
         </p>
-        <Link href="/">
+        <div className='successBtns'>
           <button type="button" width="300px" className="btn">
             Confirm Delivery
           </button>
-        </Link>
+          <button type="button" width="300px" className="btn">
+            Dispute Product
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -8,32 +8,77 @@ export const StateContext = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalQuantities, setTotalQuantities] = useState(0);
-    const [qty, setQty] = useState(1);
+    const [signedin, setSignedin] = useState(false);
+    const [connectedAddress, setConnectedAddress] = useState('');
+    // const [qty, setQty] = useState(1);
 
+
+    const connectMetamask = () => {
+        const shopContractAddress = "";
+        const shopContractABI = [];
+  
+        let shopContract;
+        let signer;
+        let provider = new ethers.providers.Web3Provider(window.ethereum, 80001);
+  
+        // MetaMask -> request wallet connection
+        provider.send("eth_requestAccounts", []).then(() => {
+        provider.listAccounts().then((accounts) => {
+          signer = provider.getSigner(accounts[0]);
+          shopContract = new ethers.Contract(
+            shopContractAddress,
+            shopContractABI,
+            signer
+            );
+          });
+        setConnectedAddress(signer);
+        setSignedin(true);
+        });
+  
+        // MetaMask -> request switch to Mumbai
+        window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [{
+              chainId: "0x13881",
+              rpcUrls: ["https://rpc-mumbai.maticvigil.com"],
+              chainName: "Mumbai",
+              nativeCurrency: {
+                  name: "MATIC",
+                  symbol: "MATIC",
+                  decimals: 18
+              },
+              blockExplorerUrls: ["https://mumbai.polygonscan.com"]
+          }]
+        });
+    }
+
+    
     let foundProduct;
     let index;
 
-    const onAdd = (product, quantity) => {
+    const onAdd = (product) => {
         const checkProductInCart = cartItems.find((item) => item._id === product._id);
         
-        setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
-        setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
-
         if(checkProductInCart) {
             const updatedCartItems = cartItems.map((cartProduct) => {
-                if(cartProduct._id === product._id) return {
-                    ...cartProduct, 
-                    quantity: cartProduct.quantity + quantity
+                if(cartProduct._id === product._id) {
+                    // ...cartProduct, 
+                    // quantity: cartProduct.quantity + quantity
+                    toast.error(`${product.name} is already in cart.`);
+                    console.log(`${JSON.stringify(product)}`);
                 }
             })
 
-            setCartItems(updatedCartItems);
+            // setCartItems(updatedCartItems);
         } else {
-            product.quantity = quantity;
+            // product.quantity = quantity;
             
             setCartItems([...cartItems, {...product}]);
+            setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price);
+            setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1);
+            toast.success(`${product.name} added to the cart.`);
+            console.log(`${JSON.stringify(product)}`);
         }
-        toast.success(`${qty} ${product.name} added to the cart.`);
     }
 
     const onRemove = (product) => {
@@ -88,12 +133,16 @@ export const StateContext = ({ children }) => {
                 cartItems,
                 totalPrice,
                 totalQuantities,
-                qty,
+                // qty,
                 incQty,
                 decQty,
                 onAdd,
                 onRemove,
-                toggleCartItemQuantity
+                toggleCartItemQuantity,
+                connectMetamask,
+                signedin,
+                setSignedin,
+                connectedAddress
             }}
         >
             {children}
